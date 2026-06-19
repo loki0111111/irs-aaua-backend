@@ -1,7 +1,11 @@
 <?php
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
-if (str_starts_with($origin, 'http://localhost:')) {
+$allowedOrigins = [
+    'https://irs-aaua-frontend.vercel.app',
+];
+
+if (in_array($origin, $allowedOrigins) || str_starts_with($origin, 'http://localhost:')) {
     header("Access-Control-Allow-Origin: $origin");
 }
 
