@@ -41,29 +41,9 @@ try {
     }
 
     $pdfPath = $existing['pdf_path'];
-
-    // Handle new PDF upload if provided
-    if (isset($_FILES['pdf']) && $_FILES['pdf']['error'] === UPLOAD_ERR_OK) {
-        $file = $_FILES['pdf'];
-        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-
-        if ($ext !== 'pdf') {
-            echo json_encode(['success' => false, 'message' => 'Only PDF files allowed']);
-            exit;
-        }
-
-        $uploadDir = __DIR__ . '/uploads/';
-        if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
-
-        // Delete old PDF
-        if ($pdfPath && file_exists($uploadDir . $pdfPath)) {
-            unlink($uploadDir . $pdfPath);
-        }
-
-        $filename = uniqid('proj_') . '.pdf';
-        if (move_uploaded_file($file['tmp_name'], $uploadDir . $filename)) {
-            $pdfPath = $filename;
-        }
+    $newPdfUrl = trim($_POST['pdf_url'] ?? '');
+    if ($newPdfUrl) {
+        $pdfPath = $newPdfUrl;
     }
 
     $stmt = $pdo->prepare("

@@ -28,31 +28,7 @@ if (!$title || !$authors || !$department_id || !$year) {
     exit;
 }
 
-$pdfPath = null;
-
-// Handle PDF upload
-if (isset($_FILES['pdf']) && $_FILES['pdf']['error'] === UPLOAD_ERR_OK) {
-    $file = $_FILES['pdf'];
-    $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-
-    if ($ext !== 'pdf') {
-        echo json_encode(['success' => false, 'message' => 'Only PDF files allowed']);
-        exit;
-    }
-
-    if ($file['size'] > 10 * 1024 * 1024) { // 10MB limit
-        echo json_encode(['success' => false, 'message' => 'File too large (max 10MB)']);
-        exit;
-    }
-
-    $uploadDir = __DIR__ . '/uploads/';
-    if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
-
-    $filename = uniqid('proj_') . '.pdf';
-    if (move_uploaded_file($file['tmp_name'], $uploadDir . $filename)) {
-        $pdfPath = $filename;
-    }
-}
+$pdfPath = trim($_POST['pdf_url'] ?? '');
 
 try {
     $stmt = $pdo->prepare("
