@@ -20,13 +20,7 @@ if (!$id) {
     exit;
 }
 
-try {
-    $stmt = $pdo->prepare("DELETE FROM supervisors WHERE id = ?");
-    $stmt->execute([$id]);
-    echo json_encode(['success' => true, 'data' => 'Supervisor deleted']);
-} catch (PDOException $e) {
-    echo json_encode(['success' => false, 'message' => 'Server error']);
-}
+
 
 function validateToken($authHeader) {
     if (!$authHeader || !str_starts_with($authHeader, 'Bearer ')) return false;
