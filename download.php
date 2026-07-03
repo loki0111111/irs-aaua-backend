@@ -3,9 +3,20 @@ require_once 'headers.php';
 
 $url = $_GET['url'] ?? '';
 if (!$url) {
-    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'No URL provided']);
     exit;
 }
 
-header('Location: ' . $url);
+if (strpos($url, 'res.cloudinary.com') === false) {
+    echo json_encode(['success' => false, 'message' => 'Invalid URL']);
+    exit;
+}
+
+$filename = basename(parse_url($url, PHP_URL_PATH));
+
+header('Content-Type: application/pdf');
+header('Content-Disposition: attachment; filename="' . $filename . '"');
+header('Cache-Control: no-cache');
+
+readfile($url);
 exit;
