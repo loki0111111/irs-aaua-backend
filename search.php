@@ -27,14 +27,14 @@ try {
     }
 
     if ($department) {
-    $conditions[] = "(d.name = ? OR p.department = ?)";
-    $params[] = $department;
-    $params[] = $department;
-}
+        $conditions[] = "(d.name = ? OR p.department = ?)";
+        $params[] = $department;
+        $params[] = $department;
+    }
 
     if ($year) {
-        $conditions[] = "year = ?";
-        $params[] = (int)$year;
+        $conditions[] = "p.year = ?";
+        $params[] = $year;
     }
 
     $where = $conditions ? 'WHERE ' . implode(' AND ', $conditions) : '';
@@ -42,7 +42,7 @@ try {
     $rankSelect = $tsquery
         ? ", ts_rank(search_vector, to_tsquery('english', ?)) AS rank"
         : '';
-    $orderBy = $tsquery ? 'ORDER BY rank DESC' : 'ORDER BY year DESC';
+    $orderBy = $tsquery ? 'ORDER BY rank DESC' : 'ORDER BY p.year DESC';
 
     if ($tsquery) {
         array_unshift($params, $tsquery);
