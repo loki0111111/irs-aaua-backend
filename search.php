@@ -42,7 +42,7 @@ try {
     $rankSelect = $tsquery
         ? ", ts_rank(search_vector, to_tsquery('english', ?)) AS rank"
         : '';
-    $orderBy = $tsquery ? 'ORDER BY rank DESC' : 'ORDER BY p.year DESC';
+    $orderBy = $tsquery ? 'ORDER BY rank DESC, p.id DESC' : 'ORDER BY p.id DESC';
 
     if ($tsquery) {
         array_unshift($params, $tsquery);
