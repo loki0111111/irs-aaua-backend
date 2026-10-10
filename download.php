@@ -32,7 +32,8 @@ if (!preg_match('/\.pdf$/i', $name)) {
 // Plain ASCII fallback for old browsers, plus the proper UTF-8 version
 $asciiName = preg_replace('/[^\x20-\x7E]/', '_', $name);
 
-header('Content-Type: application/pdf');
+header('Content-Type: application/octet-stream');
+header('X-Content-Type-Options: nosniff');
 header('Content-Disposition: attachment; filename="' . $asciiName . '"; filename*=UTF-8\'\'' . rawurlencode($name));
 header('Cache-Control: no-cache');
 
