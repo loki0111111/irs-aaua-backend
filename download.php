@@ -7,7 +7,8 @@ if (!$url) {
     exit;
 }
 
-if (strpos($url, 'res.cloudinary.com') === false) {
+$host = parse_url($url, PHP_URL_HOST);
+if ($host !== 'res.cloudinary.com') {
     echo json_encode(['success' => false, 'message' => 'Invalid URL']);
     exit;
 }
