@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 $query      = trim($_GET['q'] ?? '');
 $department = trim($_GET['department'] ?? '');
 $year       = trim($_GET['year'] ?? '');
+$supervisor = trim($_GET['supervisor'] ?? '');
 
 try {
     $conditions = [];
@@ -36,6 +37,12 @@ try {
         $conditions[] = "p.year = ?";
         $params[] = $year;
     }
+
+    if ($supervisor) {
+    $conditions[] = "(s.name = ? OR p.supervisor = ?)";
+    $params[] = $supervisor;
+    $params[] = $supervisor;
+}
 
     $where = $conditions ? 'WHERE ' . implode(' AND ', $conditions) : '';
 
